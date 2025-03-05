@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/store/slices/Providers";
+import { Providers } from "@/store/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,16 +21,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      localization={
+        params.locale === "fr" ? { locale: "fr" } : { locale: "en" }
+      }
+    >
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Providers>{children}</Providers>
+          <Providers locale={params.locale}>{children}</Providers>
         </body>
       </html>
     </ClerkProvider>

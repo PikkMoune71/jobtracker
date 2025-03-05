@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import { ChevronsUpDown, LogOut, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,6 +19,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { SignOutButton } from "@clerk/nextjs";
+import { LocalSelect } from "./LocalSelect";
+import { useI18n } from "@/locales/client";
 
 export function NavUser({
   user,
@@ -31,6 +33,7 @@ export function NavUser({
   };
   onShowAccount: () => void;
 }) {
+  const t = useI18n();
   const { isMobile } = useSidebar();
 
   return (
@@ -75,8 +78,11 @@ export function NavUser({
 
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={onShowAccount}>
-                <BadgeCheck />
-                Account
+                <User />
+                {t("myAccount")}
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <LocalSelect />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

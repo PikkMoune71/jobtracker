@@ -13,8 +13,10 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table"; // Assurez-vous d'importer les composants nécessaires
+import { useI18n } from "@/locales/client";
 
 const AddJob = () => {
+  const t = useI18n();
   const dispatch = useDispatch<AppDispatch>();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { jobs, status, error } = useSelector((state: any) => state.job);
@@ -49,24 +51,24 @@ const AddJob = () => {
 
   return (
     <div>
-      <Button onClick={handleAddJob}>Ajouter un Job</Button>
-      <h2>Liste des Jobs</h2>
-      {status === "loading" && <p>Chargement...</p>}
+      <Button onClick={handleAddJob}>{t("addJob")}</Button>
+      <h2>{t("listOfJobs")}</h2>
+      {status === "loading" && <p>{t("loading")}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {jobs.length === 0 ? (
-        <p>Aucun job trouvé.</p>
+        <p>{t("noJobFound")}</p>
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Titre</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Entreprise</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Lieu</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Salaire</TableHead>
-              <TableHead>Date d&apos;ajout</TableHead>
+              <TableHead>{t("job.title")}</TableHead>
+              <TableHead>{t("job.description")}</TableHead>
+              <TableHead>{t("job.company")}</TableHead>
+              <TableHead>{t("job.type")}</TableHead>
+              <TableHead>{t("job.location")}</TableHead>
+              <TableHead>{t("job.contactEmail")}</TableHead>
+              <TableHead>{t("job.salary")}</TableHead>
+              <TableHead>{t("job.dateAdded")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

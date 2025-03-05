@@ -15,10 +15,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useI18n } from "@/locales/client";
 import { UserProfile } from "@clerk/nextjs";
 import { useState } from "react";
 
 export default function Page() {
+  const t = useI18n();
   const [showAccount, setShowAccount] = useState(false);
 
   const handleShowAccount = () => {
@@ -44,7 +46,7 @@ export default function Page() {
                 <BreadcrumbItem>
                   <BreadcrumbPage>
                     {" "}
-                    {showAccount ? "Account" : "Dashboard"}
+                    {showAccount ? t("account") : t("dashboard")}{" "}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>

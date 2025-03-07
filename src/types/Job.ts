@@ -1,3 +1,5 @@
+import { Status } from "./Status";
+
 export type Job = {
   id?: string;
   title: string;
@@ -7,5 +9,6 @@ export type Job = {
   location: string;
   contactEmail?: string;
   salary?: string;
+  status: Status;
   createdAt?: string;
 };

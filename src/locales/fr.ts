@@ -13,6 +13,7 @@ export default {
     location: "Emplacement",
     contactEmail: "Email de contact",
     salary: "Salaire",
+    status: "Statut",
     dateAdded: "Date ajoutée",
   },
   account: "Compte",

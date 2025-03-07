@@ -12,7 +12,14 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-
+model Status {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  icon     String
+  color    String
+  createdAt DateTime @default(now())
+  Job Job[]
+}
 
 model Job {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
@@ -23,5 +30,9 @@ model Job {
   location String
   contactEmail String
   salary   String
+  status      Status   @relation(fields: [statusId], references: [id])
+  statusId    String @db.ObjectId
   createdAt DateTime @default(now())
 }
+
+

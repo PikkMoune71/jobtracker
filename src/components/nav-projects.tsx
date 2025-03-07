@@ -1,89 +1,68 @@
-"use client"
+"use client";
 
-import {
-  Folder,
-  Forward,
-  MoreHorizontal,
-  Trash2,
-  type LucideIcon,
-} from "lucide-react"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { type LucideIcon } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useI18n } from "@/locales/client";
+import { usePathname } from "next/navigation";
+import { Status } from "@/types/Status";
+import { Badge } from "./ui/badge";
+import { statusNameFrench } from "@/hooks/useTranslateStatus";
 
 export function NavProjects({
-  projects,
+  status,
+  onStatusClick,
 }: {
-  projects: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
+  status: {
+    name: string;
+    icon: LucideIcon;
+    color: string;
+  }[];
+  onStatusClick: (status: Status) => void;
 }) {
-  const { isMobile } = useSidebar()
+  const t = useI18n();
+  const pathname = usePathname();
+  const isFrench = pathname.startsWith("/fr");
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("listOfJobs")}</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {status.map((item, index) => (
+          <SidebarMenuItem key={index}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onStatusClick(item);
+                }}
+                className="flex items-center gap-2 justify-between w-full"
+              >
+                <div className="flex items-center gap-2">
+                  <item.icon width={15} />
+
+                  <span>
+                    {isFrench ? statusNameFrench(item.name) : item.name}
+                  </span>
+                </div>
+
+                <Badge
+                  className="text-black rounded-full w-10 "
+                  style={{ backgroundColor: item.color }}
+                >
+                  0
+                </Badge>
               </a>
             </SidebarMenuButton>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
-                  <MoreHorizontal />
-                  <span className="sr-only">More</span>
-                </SidebarMenuAction>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
-              >
-                <DropdownMenuItem>
-                  <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Forward className="text-muted-foreground" />
-                  <span>Share Project</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

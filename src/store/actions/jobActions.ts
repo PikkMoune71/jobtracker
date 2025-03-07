@@ -21,7 +21,10 @@ export const addJobToDatabase = createAsyncThunk(
       if (error instanceof Error) {
         return error.message;
       }
-      return "An unknown error occurred";
+      return {
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred",
+      };
     }
   }
 );

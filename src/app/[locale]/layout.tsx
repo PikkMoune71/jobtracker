@@ -27,11 +27,7 @@ export default function RootLayout({
   params: { locale: string };
 }>) {
   return (
-    <ClerkProvider
-      localization={
-        params.locale === "fr" ? { locale: "fr" } : { locale: "en" }
-      }
-    >
+    <ClerkProvider>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}

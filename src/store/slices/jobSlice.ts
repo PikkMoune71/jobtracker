@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Job } from "@/types/Job";
 import { addJobToDatabase, fetchJobs } from "../actions/jobActions";
 
-interface JobState {
+export interface JobState {
   jobs: Job[];
   status: string;
   error: string | undefined;
 }
+
 const initialState: JobState = {
   jobs: [],
   status: "idle",
@@ -23,11 +24,22 @@ export const jobSlice = createSlice({
         state.status = "loading";
       })
       .addCase(addJobToDatabase.fulfilled, (state, action) => {
-        state.jobs.push(action.payload);
-        state.status = "succeeded";
+        if (action.payload && !action.payload.error) {
+          state.jobs.push(action.payload);
+          state.status = "succeeded";
+        } else {
+          // Gère le cas d'erreur
+          state.error = action.payload?.error || "Erreur inconnue";
+          state.status = "failed";
+        }
       })
       .addCase(addJobToDatabase.rejected, (state, action) => {
-        state.error = action.payload as string;
+        // Gère le cas où la requête échoue
+        state.error =
+          (action.payload as { error?: string })?.error ||
+          action.error.message ||
+          "Erreur inconnue";
+        state.status = "failed";
       })
       .addCase(fetchJobs.pending, (state) => {
         state.status = "loading";

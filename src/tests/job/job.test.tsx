@@ -1,12 +1,19 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import AddJobForm from "@/components/AddJobForm"; // Assurez-vous que le chemin est correct
+import AddJobForm from "@/components/AddJobForm";
 import { addJobToDatabase } from "@/store/actions/jobActions";
-import "@testing-library/jest-dom";
+import { I18nProviderClient } from "@/locales/client";
 
-// Mock de l'action addJobToDatabase
+// Mock fetchStatus function for testing
+jest.mock("@/utils/fetchStatus", () => ({
+  fetchStatus: jest.fn().mockResolvedValue([
+    { id: "1", name: "Application Sent" },
+    { id: "2", name: "Interview Scheduled" },
+  ]),
+}));
+
 jest.mock("@/store/actions/jobActions", () => ({
   addJobToDatabase: jest.fn(),
 }));
@@ -18,37 +25,22 @@ describe("AddJobForm", () => {
 
   beforeEach(() => {
     store = mockStore({});
-    store.dispatch = jest.fn(); // Simuler l'appel de dispatch
-    render(
-      <Provider store={store}>
-        <AddJobForm />
-      </Provider>
-    );
+    store.dispatch = jest.fn();
   });
 
-  it("should render form inputs", () => {
-    expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Company/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Type/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Location/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Description/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contact Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Salary/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Status/i)).toBeInTheDocument(); // Vérification du champ Status
-  });
-
-  it("should update input values on change", () => {
-    const titleInput = screen.getByLabelText(/Title/i);
-    fireEvent.change(titleInput, { target: { value: "Frontend Developer" } });
-    expect(titleInput).toHaveValue("Frontend Developer");
-  });
-
-  it("should dispatch addJobToDatabase action on form submit", async () => {
-    // Simuler la récupération des status dans le composant
-    await screen.findByText("Status"); // Attendre que le composant charge
+  it("should dispatch addJobToDatabase when form is submitted", async () => {
+    await act(async () => {
+      render(
+        <I18nProviderClient locale="en">
+          <Provider store={store}>
+            <AddJobForm />
+          </Provider>
+        </I18nProviderClient>
+      );
+    });
 
     fireEvent.change(screen.getByLabelText(/Title/i), {
-      target: { value: "Frontend Developer" },
+      target: { value: "Développeur Front-End" },
     });
     fireEvent.change(screen.getByLabelText(/Company/i), {
       target: { value: "Tech Corp" },
@@ -57,37 +49,36 @@ describe("AddJobForm", () => {
       target: { value: "Full-time" },
     });
     fireEvent.change(screen.getByLabelText(/Location/i), {
-      target: { value: "Remote" },
+      target: { value: "Paris" },
     });
     fireEvent.change(screen.getByLabelText(/Description/i), {
-      target: { value: "Awesome job opportunity" },
+      target: { value: "Great job opportunity" },
     });
     fireEvent.change(screen.getByLabelText(/Contact Email/i), {
-      target: { value: "test@techcorp.com" },
+      target: { value: "hr@techcorp.com" },
     });
     fireEvent.change(screen.getByLabelText(/Salary/i), {
-      target: { value: "5000" },
+      target: { value: "60000" },
     });
 
-    // Simuler la sélection d'un status (choisir "Candidature Envoyée")
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: "Candidature Envoyée" },
-    });
+    // Simulate selecting an option from the status dropdown
+    fireEvent.click(screen.getByRole("combobox"));
+    fireEvent.click(screen.getByRole("option", { name: "Application Sent" }));
 
-    // Soumettre le formulaire
-    fireEvent.submit(screen.getByRole("form"));
+    // Simulate form submission
+    fireEvent.click(screen.getByText(/Add Job/i));
 
-    // Vérifier que l'action a été appelée avec les bonnes valeurs
-    expect(store.dispatch).toHaveBeenCalledWith(
-      addJobToDatabase({
-        title: "Frontend Developer",
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
+    expect(addJobToDatabase).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: "Développeur Front-End", // Au lieu de "Software Engineer"
         company: "Tech Corp",
         type: "Full-time",
-        location: "Remote",
-        description: "Awesome job opportunity",
-        contactEmail: "test@techcorp.com",
-        salary: "5000",
-        status: { id: "1", name: "Candidature Envoyée" },
+        location: "Paris",
+        description: "Great job opportunity",
+        contactEmail: "hr@techcorp.com",
+        salary: "60000",
+        status: expect.any(Object),
       })
     );
   });

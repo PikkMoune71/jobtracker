@@ -24,12 +24,19 @@ export const jobSlice = createSlice({
         state.status = "loading";
       })
       .addCase(addJobToDatabase.fulfilled, (state, action) => {
-        if (action.payload && !action.payload.error) {
-          state.jobs.push(action.payload);
+        if (
+          typeof action.payload !== "string" &&
+          action.payload &&
+          !("error" in action.payload)
+        ) {
+          state.jobs.push(action.payload as Job);
           state.status = "succeeded";
         } else {
           // Gère le cas d'erreur
-          state.error = action.payload?.error || "Erreur inconnue";
+          state.error =
+            typeof action.payload === "object" && "error" in action.payload
+              ? action.payload.error
+              : "Erreur inconnue";
           state.status = "failed";
         }
       })

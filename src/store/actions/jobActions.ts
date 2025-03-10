@@ -1,22 +1,19 @@
 import { Job } from "@/types/Job";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 // Action asynchrone pour ajouter un job à la BDD
 export const addJobToDatabase = createAsyncThunk(
   "job/addJobToDatabase",
   async (jobData: Job) => {
     try {
-      const response = await fetch("/api/jobs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(jobData),
-      });
+      const response = await axios.post<Job>("/api/jobs", jobData);
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error("Erreur lors de l’ajout du job");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       if (error instanceof Error) {
         return error.message;

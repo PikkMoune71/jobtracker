@@ -36,7 +36,7 @@ const AddJobForm = () => {
   });
   const [status, setStatus] = useState<Status[]>([]);
   const pathname = usePathname();
-  const isFrench = pathname.startsWith("/fr");
+  const isFrench = pathname && pathname.startsWith("/fr");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -143,7 +143,7 @@ const AddJobForm = () => {
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select status" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent role="combobox">
           <SelectGroup>
             <SelectLabel>Status</SelectLabel>
             {Array.isArray(status) &&

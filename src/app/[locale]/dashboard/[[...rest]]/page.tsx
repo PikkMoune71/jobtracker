@@ -1,5 +1,4 @@
 "use client";
-import AddJobForm from "@/components/AddJobForm";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Board } from "@/components/Board";
 import {
@@ -75,11 +74,10 @@ export default function Page() {
           ) : (
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
               {selectedStatus && (
-                <div className="flex flex-col justify-center items-center">
+                <div className="flex flex-col">
                   <h1 className="text-4xl font-bold">
                     Status {selectedStatus.name}
                   </h1>
-                  <AddJobForm />
                 </div>
               )}
             </div>

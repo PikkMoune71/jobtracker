@@ -22,4 +22,17 @@ export default {
   logout: "Logout",
   register: "Register",
   dashboard: "Dashboard",
+  jobSchemaValidate: {
+    title: "Title must be at least 3 characters long",
+    description: "Description must be at least 5 characters long",
+    company: "Company name must be at least 2 characters long",
+    type: "Type must be at least 3 characters long",
+    location: "Location must be at least 2 characters long",
+    contactEmail: "Email is not valid",
+    salary: "Salary must be a number",
+    status: {
+      id: "Status is required",
+      name: "Status name is required",
+    },
+  },
 } as const;

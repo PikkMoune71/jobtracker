@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Check, Clock, Forward, Send, X } from "lucide-react";
+import { BookText, Check, Clock, Forward, Send, X } from "lucide-react";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -13,6 +13,9 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { Logo } from "./Logo";
 import { Status } from "@/types/Status";
+import AddJobForm from "./AddJobForm";
+import { DialogAction } from "./DialogAction";
+import { useI18n } from "@/locales/client";
 
 const data = {
   status: [
@@ -51,6 +54,7 @@ export function AppSidebar({
   onAccountClick: () => void;
   onStatusClick: (status: Status) => void;
 }) {
+  const t = useI18n();
   const { user } = useUser();
   const userData = user
     ? {
@@ -64,12 +68,20 @@ export function AppSidebar({
         avatar: "",
       };
 
+  const addJob = t("addJob");
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Logo />
       </SidebarHeader>
       <SidebarContent>
+        <div className="flex flex-col gap-4 m-2">
+          <DialogAction
+            title={addJob}
+            icon={<BookText />}
+            component={<AddJobForm />}
+          />
+        </div>
         <NavProjects status={data.status} onStatusClick={onStatusClick} />
       </SidebarContent>
       <SidebarFooter>

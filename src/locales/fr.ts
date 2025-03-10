@@ -22,4 +22,17 @@ export default {
   logout: "Déconnexion",
   register: "Inscription",
   dashboard: "Tableau de bord",
+  jobSchemaValidate: {
+    title: "Le titre doit contenir au moins 3 caractères",
+    description: "La description doit contenir au moins 5 caractères",
+    company: "Le nom de l'entreprise doit contenir au moins 2 caractères",
+    type: "Le type doit contenir au moins 3 caractères",
+    location: "La localisation doit contenir au moins 2 caractères",
+    contactEmail: "L'email n'est pas valide",
+    salary: "Le salaire doit être un nombre",
+    status: {
+      id: "Le statut est requis",
+      name: "Le nom du statut est requis",
+    },
+  },
 } as const;

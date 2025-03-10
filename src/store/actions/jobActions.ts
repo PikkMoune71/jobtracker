@@ -31,6 +31,8 @@ export const fetchJobs = createAsyncThunk("job/fetchJobs", async () => {
   try {
     const response = await axios.get("/api/jobs");
 
+    console.log(response);
+
     if (!response.data) {
       throw new Error("Erreur lors de la récupération des jobs");
     }

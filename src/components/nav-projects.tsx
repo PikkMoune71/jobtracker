@@ -56,7 +56,7 @@ export function NavProjects({
                       className="text-black rounded-full w-10 "
                       style={{ backgroundColor: status.color }}
                     >
-                      0
+                      {(status.Job ?? []).length}
                     </Badge>
                   </a>
                 </SidebarMenuButton>

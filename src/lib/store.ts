@@ -15,7 +15,7 @@ const statusPersistedReducer = persistReducer(persistConfig, statusReducer);
 
 export const store = configureStore({
   reducer: {
-    job: jobPersistedReducer,
+    jobs: jobPersistedReducer,
     status: statusPersistedReducer,
   },
 

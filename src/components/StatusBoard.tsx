@@ -12,7 +12,7 @@ interface StatusBoardProps {
 
 export const StatusBoard = ({ selectedStatus }: StatusBoardProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { jobs } = useSelector((state: RootState) => state.job);
+  const { jobs } = useSelector((state: RootState) => state.jobs);
 
   useEffect(() => {
     dispatch(fetchJobsByStatus(selectedStatus.id as string));

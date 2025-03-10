@@ -22,7 +22,7 @@ describe("Fetch Jobs depending the status", () => {
 
   beforeEach(() => {
     store = mockStore({
-      job: {
+      jobs: {
         jobs: [
           {
             id: "1",

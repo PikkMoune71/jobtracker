@@ -1,6 +1,6 @@
 "use client";
-import * as React from "react";
-import { BookText, Check, Clock, Forward, Send, X } from "lucide-react";
+import { useEffect } from "react";
+import { BookText } from "lucide-react";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import {
@@ -16,36 +16,9 @@ import { Status } from "@/types/Status";
 import AddJobForm from "./AddJobForm";
 import { DialogAction } from "./DialogAction";
 import { useI18n } from "@/locales/client";
-
-const data = {
-  status: [
-    {
-      name: "Application Sent",
-      icon: Send,
-      color: "#60a5fa",
-    },
-    {
-      name: "Interview Scheduled",
-      icon: Clock,
-      color: "#facc15",
-    },
-    {
-      name: "Application Accepted",
-      icon: Check,
-      color: "#4ade80",
-    },
-    {
-      name: "Application Rejected",
-      icon: X,
-      color: "#f87171",
-    },
-    {
-      name: "Follow Up",
-      icon: Forward,
-      color: "#818cf8",
-    },
-  ],
-};
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
+import { fetchStatus } from "@/store/actions/statusActions";
 
 export function AppSidebar({
   onAccountClick,
@@ -55,6 +28,8 @@ export function AppSidebar({
   onStatusClick: (status: Status) => void;
 }) {
   const t = useI18n();
+  const dispatch = useDispatch<AppDispatch>();
+  const status = useSelector((state: RootState) => state.status);
   const { user } = useUser();
   const userData = user
     ? {
@@ -69,6 +44,11 @@ export function AppSidebar({
       };
 
   const addJob = t("addJob");
+
+  useEffect(() => {
+    dispatch(fetchStatus());
+  }, [dispatch]);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -82,7 +62,7 @@ export function AppSidebar({
             component={<AddJobForm />}
           />
         </div>
-        <NavProjects status={data.status} onStatusClick={onStatusClick} />
+        <NavProjects status={status.status} onStatusClick={onStatusClick} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={userData} onShowAccount={onAccountClick} />

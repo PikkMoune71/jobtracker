@@ -1,16 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Job } from "@/types/Job";
-import { addJobToDatabase, fetchJobs } from "../actions/jobActions";
+import {
+  addJobToDatabase,
+  fetchJobs,
+  fetchJobsByStatus,
+} from "../actions/jobActions";
 
 export interface JobState {
   jobs: Job[];
-  status: string;
+  state: string;
   error: string | undefined;
 }
 
 const initialState: JobState = {
   jobs: [],
-  status: "idle",
+  state: "idle",
   error: "",
 };
 
@@ -21,7 +25,7 @@ export const jobSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addJobToDatabase.pending, (state) => {
-        state.status = "loading";
+        state.state = "loading";
       })
       .addCase(addJobToDatabase.fulfilled, (state, action) => {
         if (
@@ -30,14 +34,14 @@ export const jobSlice = createSlice({
           !("error" in action.payload)
         ) {
           state.jobs.push(action.payload as Job);
-          state.status = "succeeded";
+          state.state = "succeeded";
         } else {
           // Gère le cas d'erreur
           state.error =
             typeof action.payload === "object" && "error" in action.payload
               ? action.payload.error
               : "Erreur inconnue";
-          state.status = "failed";
+          state.state = "failed";
         }
       })
       .addCase(addJobToDatabase.rejected, (state, action) => {
@@ -46,16 +50,26 @@ export const jobSlice = createSlice({
           (action.payload as { error?: string })?.error ||
           action.error.message ||
           "Erreur inconnue";
-        state.status = "failed";
+        state.state = "failed";
       })
       .addCase(fetchJobs.pending, (state) => {
-        state.status = "loading";
+        state.state = "loading";
       })
       .addCase(fetchJobs.fulfilled, (state, action) => {
         state.jobs = action.payload;
-        state.status = "succeeded";
+        state.state = "succeeded";
       })
       .addCase(fetchJobs.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(fetchJobsByStatus.pending, (state) => {
+        state.state = "loading";
+      })
+      .addCase(fetchJobsByStatus.fulfilled, (state, action) => {
+        state.jobs = action.payload;
+        state.state = "succeeded";
+      })
+      .addCase(fetchJobsByStatus.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

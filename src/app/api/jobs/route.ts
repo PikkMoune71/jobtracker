@@ -76,7 +76,7 @@ export async function GET() {
     // Récupération des jobs, y compris leur statut
     const jobs = await prisma.job.findMany({
       orderBy: { createdAt: "desc" },
-      include: { status: true }, // Inclure le statut dans la réponse
+      include: { status: true },
     });
 
     return NextResponse.json(jobs);

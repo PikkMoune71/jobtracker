@@ -22,19 +22,11 @@ import { usePathname } from "next/navigation";
 import { statusNameFrench } from "@/hooks/useTranslateStatus";
 import { useJobSchema } from "@/hooks/useValidateJob";
 import { Textarea } from "./ui/textarea";
-import { Check, Clock, Forward, LucideIcon, Send, X } from "lucide-react";
+import { iconMap } from "@/hooks/useIconMap";
 
 interface AddJobFormProps {
   onClose?: () => void;
 }
-
-const iconMap: Record<string, LucideIcon> = {
-  Send,
-  Clock,
-  Forward,
-  Check,
-  X,
-};
 
 const AddJobForm = ({ onClose }: AddJobFormProps) => {
   const t = useI18n();

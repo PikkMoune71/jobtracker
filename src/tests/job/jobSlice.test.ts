@@ -11,7 +11,7 @@ const createTestStore = (preloadedState: Partial<JobState> = {}) =>
     preloadedState: {
       job: {
         jobs: [],
-        status: "idle",
+        state: "idle",
         error: "",
         ...preloadedState.jobs,
       },
@@ -39,7 +39,7 @@ describe("jobSlice", () => {
     const state = store.getState().job;
 
     // Vérifiez que le statut est mis à jour en 'loading'
-    expect(state.status).toBe("loading");
+    expect(state.state).toBe("loading");
   });
 
   it("should handle addJobToDatabase.fulfilled (success)", () => {
@@ -64,7 +64,7 @@ describe("jobSlice", () => {
 
     // Vérifiez que le job a été ajouté au tableau et que le statut est 'succeeded'
     expect(state.jobs).toContainEqual(job);
-    expect(state.status).toBe("succeeded");
+    expect(state.state).toBe("succeeded");
     expect(state.error).toBe("");
   });
 
@@ -91,7 +91,7 @@ describe("jobSlice", () => {
     const state = store.getState().job;
 
     // Vérifiez que l'erreur est capturée et que le statut est 'failed'
-    expect(state.status).toBe("failed");
+    expect(state.state).toBe("failed");
     expect(state.error).toBe(errorMessage);
   });
 });

@@ -29,13 +29,13 @@ export const addJobToDatabase = createAsyncThunk(
 // Action asynchrone pour récupérer les jobs de la BDD
 export const fetchJobs = createAsyncThunk("job/fetchJobs", async () => {
   try {
-    const response = await fetch("/api/jobs");
+    const response = await axios.get("/api/jobs");
 
-    if (!response.ok) {
+    if (!response.data) {
       throw new Error("Erreur lors de la récupération des jobs");
     }
 
-    return await response.json();
+    return await response.data;
   } catch (error) {
     if (error instanceof Error) {
       return error.message;
@@ -43,3 +43,24 @@ export const fetchJobs = createAsyncThunk("job/fetchJobs", async () => {
     return "An unknown error occurred";
   }
 });
+
+// Action asynchrone pour récupérer les jobs de la BDD selon le statut
+export const fetchJobsByStatus = createAsyncThunk(
+  "job/fetchJobsByStatus",
+  async (statusId: string) => {
+    try {
+      const response = await axios.get(`/api/jobs/status/${statusId}`);
+
+      if (!response.data) {
+        throw new Error("Erreur lors de la récupération des jobs");
+      }
+
+      return await response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "An unknown error occurred";
+    }
+  }
+);

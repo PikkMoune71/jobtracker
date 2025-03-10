@@ -1,6 +1,5 @@
 "use client";
 
-import { type LucideIcon } from "lucide-react";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,16 +12,13 @@ import { usePathname } from "next/navigation";
 import { Status } from "@/types/Status";
 import { Badge } from "./ui/badge";
 import { statusNameFrench } from "@/hooks/useTranslateStatus";
+import { iconMap } from "@/hooks/useIconMap";
 
 export function NavProjects({
   status,
   onStatusClick,
 }: {
-  status: {
-    name: string;
-    icon: LucideIcon;
-    color: string;
-  }[];
+  status: Status[];
   onStatusClick: (status: Status) => void;
 }) {
   const t = useI18n();
@@ -33,35 +29,40 @@ export function NavProjects({
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>{t("listOfJobs")}</SidebarGroupLabel>
       <SidebarMenu>
-        {status.map((item, index) => (
-          <SidebarMenuItem key={index}>
-            <SidebarMenuButton asChild>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onStatusClick(item);
-                }}
-                className="flex items-center gap-2 justify-between w-full"
-              >
-                <div className="flex items-center gap-2">
-                  <item.icon width={15} />
+        {Array.isArray(status) &&
+          status.map((status, index) => {
+            const Icon =
+              typeof status.icon === "string" ? iconMap[status.icon] : null;
+            return (
+              <SidebarMenuItem key={index}>
+                <SidebarMenuButton asChild>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onStatusClick(status);
+                    }}
+                    className="flex items-center gap-2 justify-between w-full"
+                  >
+                    <div className="flex items-center gap-2">
+                      {Icon && <Icon width={15} />}
 
-                  <span>
-                    {isFrench ? statusNameFrench(item.name) : item.name}
-                  </span>
-                </div>
+                      <span>
+                        {isFrench ? statusNameFrench(status.name) : status.name}
+                      </span>
+                    </div>
 
-                <Badge
-                  className="text-black rounded-full w-10 "
-                  style={{ backgroundColor: item.color }}
-                >
-                  0
-                </Badge>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+                    <Badge
+                      className="text-black rounded-full w-10 "
+                      style={{ backgroundColor: status.color }}
+                    >
+                      0
+                    </Badge>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
       </SidebarMenu>
     </SidebarGroup>
   );

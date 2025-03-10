@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   const status = await prisma.status.findMany({
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: "asc" },
   });
 
   return NextResponse.json(status);

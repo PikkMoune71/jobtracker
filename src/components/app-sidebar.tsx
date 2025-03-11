@@ -49,7 +49,6 @@ export function AppSidebar({
     dispatch(fetchStatus());
   }, [dispatch]);
 
-  console.log(status);
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>

@@ -33,6 +33,7 @@ model Job {
   status      Status   @relation(fields: [statusId], references: [id])
   statusId    String @db.ObjectId
   createdAt DateTime @default(now())
+  userId    String? 
 }
 
 

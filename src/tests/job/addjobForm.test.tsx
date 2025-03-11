@@ -72,7 +72,7 @@ describe("AddJobForm", () => {
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(addJobToDatabase).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: "Développeur Front-End", // Au lieu de "Software Engineer"
+        title: "Développeur Front-End",
         company: "Tech Corp",
         type: "Full-time",
         location: "Paris",

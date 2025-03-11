@@ -33,6 +33,7 @@ describe("jobSlice", () => {
         contactEmail: "",
         salary: "",
         status: { name: "" },
+        userId: "",
       })
     );
 
@@ -56,6 +57,7 @@ describe("jobSlice", () => {
       contactEmail: "test@gmail.com",
       salary: "100000",
       status: { name: "Candidature Envoyée" },
+      userId: "1",
     };
 
     store.dispatch(addJobToDatabase.fulfilled(job, "", job));
@@ -85,6 +87,7 @@ describe("jobSlice", () => {
         contactEmail: "",
         salary: "",
         status: { name: "" },
+        userId: "",
       })
     );
 

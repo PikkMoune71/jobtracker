@@ -11,4 +11,5 @@ export type Job = {
   salary?: string;
   status: Status;
   createdAt?: string;
+  userId?: string;
 };

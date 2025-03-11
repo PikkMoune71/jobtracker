@@ -1,12 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const id = url.pathname.split("/").pop();
-  console.log(id);
 
   try {
     const jobs = await prisma.job.findMany({

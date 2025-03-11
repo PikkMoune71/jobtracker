@@ -1,10 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { getAuth } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    const { userId } = getAuth(req);
+
+    if (!userId) {
+      return NextResponse.json({ message: "Non authentifié" }, { status: 401 });
+    }
     const body = await req.json();
     const {
       title,
@@ -59,6 +65,7 @@ export async function POST(req: Request) {
         status: {
           connect: { id: existingStatus.id }, // Relier le statut par son ID
         },
+        userId,
         createdAt: new Date(),
       },
     });
@@ -71,10 +78,29 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  let userId;
+  try {
+    const auth = getAuth(req);
+    userId = auth.userId;
+
+    console.log("User ID:", userId);
+
+    if (!userId) {
+      return NextResponse.json({ message: "Non authentifié" }, { status: 401 });
+    }
+  } catch (error) {
+    console.error("Erreur d'authentification Clerk:", error);
+    return NextResponse.json(
+      { message: "Erreur d'authentification" },
+      { status: 500 }
+    );
+  }
+
   try {
     // Récupération des jobs, y compris leur statut
     const jobs = await prisma.job.findMany({
+      where: { userId: userId },
       orderBy: { createdAt: "desc" },
       include: { status: true },
     });

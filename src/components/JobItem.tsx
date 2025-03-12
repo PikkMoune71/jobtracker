@@ -46,13 +46,19 @@ export const JobItem = ({ job, selectedStatus }: JobItemProps) => {
       style={{ borderLeftColor: selectedStatus.color }}
     >
       <CardHeader>
-        <div className="flex items-center justify-between flex-wrap">
+        <div className="flex flex-col items-start justify-between flex-wrap">
           <div className="flex flex-col">
             <h3 className="text-2xl">{job.title}</h3>
             <p className="font-bold">{job.company}</p>
-            <p className="text-indigo-400 -mt-2">{job.location}</p>
+            <p className="text-indigo-400 -mt-1">{job.location}</p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-4 mt-4">
+            <div className="flex flex-wrap gap-2">
+              <Badge className="rounded-full text-sm">{job.type}</Badge>
+              <Badge className="rounded-full text-sm bg-amber-400 text-black">
+                {job.salary}
+              </Badge>
+            </div>
             <p className="flex items-center flex-wrap gap-2 text-sm">
               {job.contactEmail}
               <Badge variant="outline" className="rounded-xl text-sm">
@@ -69,13 +75,6 @@ export const JobItem = ({ job, selectedStatus }: JobItemProps) => {
                 </button>
               </Badge>
             </p>
-
-            <div className="flex flex-wrap gap-2">
-              <Badge className="rounded-full text-sm">{job.type}</Badge>
-              <Badge className="rounded-full text-sm bg-amber-400 text-black">
-                {job.salary}
-              </Badge>
-            </div>
           </div>
         </div>
       </CardHeader>

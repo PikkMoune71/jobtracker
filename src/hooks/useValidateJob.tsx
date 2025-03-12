@@ -10,7 +10,23 @@ export const useJobSchema = () => {
     type: z.string().min(3, t("jobSchemaValidate.type")),
     location: z.string().min(2, t("jobSchemaValidate.location")),
     contactEmail: z.string().email(t("jobSchemaValidate.contactEmail")),
-    salary: z.string().regex(/^\d+$/, t("jobSchemaValidate.salary")),
+    salary: z
+      .string()
+      .regex(/^(?:\d+[kKmM]?|\d+-\d+[kKmM]?)$/, t("jobSchemaValidate.salary"))
+      .refine(
+        (val) => {
+          if (val.includes("-")) {
+            const [min, max] = val
+              .split("-")
+              .map((v) => parseInt(v.replace(/[kKmM]/g, ""), 10));
+            return min <= max;
+          }
+          return true;
+        },
+        {
+          message: t("jobSchemaValidate.salaryRange"),
+        }
+      ),
     status: z.object({
       id: z.string().min(1, t("jobSchemaValidate.status.id")),
       name: z.string().min(1, t("jobSchemaValidate.status.name")),

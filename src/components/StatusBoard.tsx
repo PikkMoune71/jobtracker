@@ -49,9 +49,11 @@ export const StatusBoard = ({ selectedStatus }: StatusBoardProps) => {
               </Badge>
             </div>
           </h1>
-          {jobs.map((job) => (
-            <JobItem key={job.id} job={job} selectedStatus={selectedStatus} />
-          ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {jobs.map((job) => (
+              <JobItem key={job.id} job={job} selectedStatus={selectedStatus} />
+            ))}
+          </div>
         </>
       )}
     </div>

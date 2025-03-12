@@ -54,7 +54,7 @@ const AddJobForm = ({ onClose }: AddJobFormProps) => {
     getStatus();
   }, []);
 
-  const jobSchema = useJobSchema(); // On appelle la fonction ici pour obtenir le schema dynamique
+  const jobSchema = useJobSchema();
 
   const validateJob = (jobData: Job) => {
     const result = jobSchema.safeParse(jobData);

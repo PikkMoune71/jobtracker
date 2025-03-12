@@ -30,6 +30,7 @@ export default {
     location: "La localisation doit contenir au moins 2 caractères",
     contactEmail: "L'email n'est pas valide",
     salary: "Le salaire doit être un nombre",
+    salaryRange: "Le salaire minimum doit être inférieur au salaire maximum",
     status: {
       id: "Le statut est requis",
       name: "Le nom du statut est requis",

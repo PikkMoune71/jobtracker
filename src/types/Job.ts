@@ -10,6 +10,7 @@ export type Job = {
   contactEmail?: string;
   salary?: string;
   status: Status;
+  statusId?: string;
   createdAt?: string;
   userId?: string;
 };

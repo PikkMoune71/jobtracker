@@ -4,6 +4,7 @@ import {
   addJobToDatabase,
   fetchJobs,
   fetchJobsByStatus,
+  updateJobStatus,
 } from "../actions/jobActions";
 
 export interface JobState {
@@ -70,6 +71,21 @@ export const jobSlice = createSlice({
         state.state = "succeeded";
       })
       .addCase(fetchJobsByStatus.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(updateJobStatus.pending, (state) => {
+        state.state = "loading";
+      })
+      .addCase(updateJobStatus.fulfilled, (state, action) => {
+        const updatedJobIndex = state.jobs.findIndex(
+          (job) => job.id === action.payload.id
+        );
+        if (updatedJobIndex >= 0) {
+          state.jobs[updatedJobIndex] = action.payload;
+        }
+        state.state = "succeeded";
+      })
+      .addCase(updateJobStatus.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

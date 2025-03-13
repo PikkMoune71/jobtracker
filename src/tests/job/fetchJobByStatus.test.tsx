@@ -34,6 +34,7 @@ describe("Fetch Jobs depending the status", () => {
             contactEmail: "test@gmail.com",
             salary: "60000",
             status: { id: "1", name: "Application Sent" },
+            statusId: "1",
           },
         ],
       },
@@ -65,5 +66,6 @@ describe("Fetch Jobs depending the status", () => {
     expect(screen.getByText(/Great job opportunity/i)).toBeInTheDocument();
     expect(screen.getByText(/test@gmail.com/i)).toBeInTheDocument();
     expect(screen.getByText(/60000/i)).toBeInTheDocument();
+    expect(screen.getByText(/Application Sent/i)).toBeInTheDocument();
   });
 });

@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     if (!userId) {
       return NextResponse.json({ message: "Non authentifié" }, { status: 401 });
     }
+
     const body = await req.json();
     const {
       title,
@@ -80,6 +81,10 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const { userId } = await auth.protect();
+
+    if (!userId) {
+      return NextResponse.json({ message: "Non authentifié" }, { status: 401 });
+    }
 
     const jobs = await prisma.job.findMany({
       where: { userId: userId },

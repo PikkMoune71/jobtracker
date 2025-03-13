@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "@/lib/store";
-import { fetchJobsByStatus } from "@/store/actions/jobActions";
+import { fetchJobsByStatus, updateJobStatus } from "@/store/actions/jobActions";
 import { Status } from "@/types/Status";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +29,12 @@ export const StatusBoard = ({ selectedStatus }: StatusBoardProps) => {
     dispatch(fetchJobsByStatus(selectedStatus.id as string));
   }, [dispatch, selectedStatus]);
 
+  const handleStatusChange = (jobId: string, newStatus: Status) => {
+    dispatch(updateJobStatus({ jobId, statusId: newStatus.id as string }));
+  };
+
+  const filteredJobs = jobs.filter((job) => job.statusId === selectedStatus.id);
+
   return (
     <div>
       {state === "loading" ? (
@@ -49,9 +55,21 @@ export const StatusBoard = ({ selectedStatus }: StatusBoardProps) => {
               </Badge>
             </div>
           </h1>
+          {jobs.length === 0 && (
+            <p className="text-gray-500 mt-4">
+              {isFrench
+                ? "Aucune candidature trouvée pour ce statut"
+                : "No applications found for this status"}
+            </p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {jobs.map((job) => (
-              <JobItem key={job.id} job={job} selectedStatus={selectedStatus} />
+            {filteredJobs.map((job) => (
+              <JobItem
+                key={job.id}
+                job={job}
+                selectedStatus={selectedStatus}
+                onStatusChange={handleStatusChange}
+              />
             ))}
           </div>
         </>

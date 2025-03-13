@@ -64,3 +64,27 @@ export const fetchJobsByStatus = createAsyncThunk(
     }
   }
 );
+
+// Action asynchrone pour mettre à jour le statut d'un job
+export const updateJobStatus = createAsyncThunk(
+  "job/updateJobStatus",
+  async ({ jobId, statusId }: { jobId: string; statusId: string }) => {
+    try {
+      const response = await axios.put(`/api/jobs/${jobId}/status`, {
+        jobId,
+        statusId,
+      });
+
+      if (!response.data) {
+        throw new Error("Erreur lors de la mise à jour du statut du job");
+      }
+
+      return await response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "An unknown error occurred";
+    }
+  }
+);

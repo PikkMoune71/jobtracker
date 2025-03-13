@@ -40,6 +40,7 @@ const AddJobForm = ({ onClose }: AddJobFormProps) => {
     contactEmail: "",
     salary: "",
     status: { id: "", name: "" },
+    statusId: "",
   });
   const [status, setStatus] = useState<Status[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -93,6 +94,7 @@ const AddJobForm = ({ onClose }: AddJobFormProps) => {
         contactEmail: "",
         salary: "",
         status: { id: "", name: "" },
+        statusId: "",
       });
       onClose?.();
     }

@@ -5,16 +5,24 @@ import { Check, ChevronDown, ChevronUp, Clipboard } from "lucide-react";
 import { Job } from "@/types/Job";
 import { Status } from "@/types/Status";
 
+import { MoreActionsJob } from "./MoreActionsJob";
+
 interface JobItemProps {
   job: Job;
   selectedStatus: Status;
+  onStatusChange: (jobId: string, newStatus: Status) => void;
 }
 
-export const JobItem = ({ job, selectedStatus }: JobItemProps) => {
+export const JobItem = ({
+  job,
+  selectedStatus,
+  onStatusChange,
+}: JobItemProps) => {
   const [expandedJob, setExpandedJob] = useState<Set<string>>(new Set());
   const [copiedEmails, setCopiedEmails] = useState<Map<string, boolean>>(
     new Map()
   );
+
   const toggleDescription = (jobId: string) => {
     setExpandedJob((prev) => {
       const newExpandedJob = new Set(prev);
@@ -39,6 +47,7 @@ export const JobItem = ({ job, selectedStatus }: JobItemProps) => {
       }, 2000);
     });
   };
+
   return (
     <Card
       key={job.id}
@@ -47,10 +56,19 @@ export const JobItem = ({ job, selectedStatus }: JobItemProps) => {
     >
       <CardHeader>
         <div className="flex flex-col items-start justify-between flex-wrap">
-          <div className="flex flex-col">
-            <h3 className="text-2xl">{job.title}</h3>
-            <p className="font-bold">{job.company}</p>
-            <p className="text-indigo-400 -mt-1">{job.location}</p>
+          <div className="flex justify-between w-full">
+            <div className="flex flex-col">
+              <h3 className="text-2xl">{job.title}</h3>
+              <p className="font-bold">{job.company}</p>
+              <p className="text-indigo-400 -mt-1">{job.location}</p>
+            </div>
+            <div>
+              <MoreActionsJob
+                job={job}
+                selectedStatus={selectedStatus}
+                onStatusChange={onStatusChange}
+              />
+            </div>
           </div>
           <div className="flex flex-wrap gap-4 mt-4">
             <div className="flex flex-wrap gap-2">

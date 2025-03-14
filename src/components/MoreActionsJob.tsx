@@ -16,19 +16,25 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { Status } from "@/types/Status";
 import { Job } from "@/types/Job";
+import { useI18n } from "@/locales/client";
 
 interface MoreActionsJobProps {
   job: Job;
   selectedStatus: Status;
   onStatusChange: (jobId: string, newStatus: Status) => void;
+  onUpdatedJobClick: (job: Job) => void;
 }
 
 export const MoreActionsJob = ({
   job,
   selectedStatus,
   onStatusChange,
+  onUpdatedJobClick,
 }: MoreActionsJobProps) => {
+  const t = useI18n();
   const status = useSelector((state: RootState) => state.status?.status);
+
+  const updateJob = t("updateJob");
 
   const handleDeleteJob = () => {
     // Implement delete job
@@ -52,8 +58,16 @@ export const MoreActionsJob = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent role="menu">
         <DropdownMenuItem className="cursor-pointer">
-          <Edit className="mr-2 text-black" />
-          Modifier
+          {onUpdatedJobClick && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onUpdatedJobClick(job)}
+            >
+              <Edit className="mr-2" />
+              {updateJob}
+            </Button>
+          )}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {handleDeleteJob && (

@@ -39,6 +39,7 @@ describe("MoreActionsJob", () => {
     };
 
     const onStatusChangeMock = jest.fn();
+    const onUpdatedJobClickMock = jest.fn();
 
     const job: Job = {
       id: "123",
@@ -60,6 +61,7 @@ describe("MoreActionsJob", () => {
               job={job}
               selectedStatus={selectedStatus}
               onStatusChange={onStatusChangeMock}
+              onUpdatedJobClick={onUpdatedJobClickMock}
             />
           </Provider>
         </I18nProviderClient>
@@ -95,6 +97,7 @@ describe("MoreActionsJob", () => {
     };
 
     const onStatusChangeMock = jest.fn();
+    const onUpdatedJobClickMock = jest.fn();
 
     const job: Job = {
       id: "123",
@@ -116,6 +119,7 @@ describe("MoreActionsJob", () => {
               job={job}
               selectedStatus={selectedStatus}
               onStatusChange={onStatusChangeMock}
+              onUpdatedJobClick={onUpdatedJobClickMock}
             />
           </Provider>
         </I18nProviderClient>

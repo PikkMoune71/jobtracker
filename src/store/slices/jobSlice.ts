@@ -4,6 +4,7 @@ import {
   addJobToDatabase,
   fetchJobs,
   fetchJobsByStatus,
+  updateJobInDatabase,
   updateJobStatus,
 } from "../actions/jobActions";
 
@@ -86,6 +87,34 @@ export const jobSlice = createSlice({
         state.state = "succeeded";
       })
       .addCase(updateJobStatus.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(updateJobInDatabase.pending, (state) => {
+        state.state = "loading";
+      })
+      .addCase(updateJobInDatabase.fulfilled, (state, action) => {
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "id" in action.payload
+        ) {
+          if (typeof action.payload !== "string" && "id" in action.payload) {
+            state.jobs = state.jobs.map((job) =>
+              job.id === (action.payload as Job).id
+                ? (action.payload as Job)
+                : job
+            );
+          } else {
+            state.error = "Données invalides reçues lors de la mise à jour";
+            state.state = "failed";
+          }
+          state.state = "succeeded";
+        } else {
+          state.error = "Données invalides reçues lors de la mise à jour";
+          state.state = "failed";
+        }
+      })
+      .addCase(updateJobInDatabase.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

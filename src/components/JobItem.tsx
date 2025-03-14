@@ -11,12 +11,14 @@ interface JobItemProps {
   job: Job;
   selectedStatus: Status;
   onStatusChange: (jobId: string, newStatus: Status) => void;
+  onUpdatedJobClick: (job: Job) => void;
 }
 
 export const JobItem = ({
   job,
   selectedStatus,
   onStatusChange,
+  onUpdatedJobClick,
 }: JobItemProps) => {
   const [expandedJob, setExpandedJob] = useState<Set<string>>(new Set());
   const [copiedEmails, setCopiedEmails] = useState<Map<string, boolean>>(
@@ -67,6 +69,7 @@ export const JobItem = ({
                 job={job}
                 selectedStatus={selectedStatus}
                 onStatusChange={onStatusChange}
+                onUpdatedJobClick={onUpdatedJobClick}
               />
             </div>
           </div>

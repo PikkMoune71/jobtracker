@@ -88,3 +88,26 @@ export const updateJobStatus = createAsyncThunk(
     }
   }
 );
+
+export const updateJobInDatabase = createAsyncThunk(
+  "job/updateJobInDatabase",
+  async (jobData: Job) => {
+    try {
+      const response = await axios.put<Job>(`/api/jobs/${jobData.id}`, jobData);
+
+      if (!response.data) {
+        throw new Error("Erreur lors de la mise à jour du job");
+      }
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return {
+        error:
+          error instanceof Error ? error.message : "An unknown error occurred",
+      };
+    }
+  }
+);

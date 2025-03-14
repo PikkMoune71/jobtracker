@@ -46,11 +46,16 @@ describe("Fetch Jobs depending the status", () => {
   it("should dispatch fetchJobs depending the status", async () => {
     const selectedStatus = { id: "1", name: "Application Sent" };
 
+    const onUpdatedJobClickMock = jest.fn();
+
     await act(async () => {
       render(
         <I18nProviderClient locale="en">
           <Provider store={store}>
-            <StatusBoard selectedStatus={selectedStatus} />
+            <StatusBoard
+              selectedStatus={selectedStatus}
+              onUpdatedJobClick={onUpdatedJobClickMock}
+            />
           </Provider>
         </I18nProviderClient>
       );

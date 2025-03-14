@@ -14,6 +14,14 @@ interface DialogActionProps {
   icon?: ReactElement<{ className: string }>;
   description?: string;
   component?: React.ReactElement<{ onClose: () => void }>;
+  sizeButton?: "default" | "sm" | "lg" | "icon" | "xs";
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
 }
 
 export function DialogAction({
@@ -21,6 +29,8 @@ export function DialogAction({
   icon,
   description,
   component,
+  sizeButton,
+  variant,
 }: DialogActionProps) {
   const [open, setOpen] = useState(false);
 
@@ -30,7 +40,10 @@ export function DialogAction({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button
+          size={sizeButton ? sizeButton : "default"}
+          variant={variant ? variant : "default"}
+        >
           {icon}
           {title}
         </Button>

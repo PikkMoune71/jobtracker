@@ -4,7 +4,6 @@ import { Badge } from "./ui/badge";
 import { Check, ChevronDown, ChevronUp, Clipboard } from "lucide-react";
 import { Job } from "@/types/Job";
 import { Status } from "@/types/Status";
-
 import { MoreActionsJob } from "./MoreActionsJob";
 
 interface JobItemProps {
@@ -77,7 +76,7 @@ export const JobItem = ({
             <div className="flex flex-wrap gap-2">
               <Badge className="rounded-full text-sm">{job.type}</Badge>
               <Badge className="rounded-full text-sm bg-amber-400 text-black">
-                {job.salary}
+                {job.salary} €
               </Badge>
             </div>
             <p className="flex items-center flex-wrap gap-2 text-sm">

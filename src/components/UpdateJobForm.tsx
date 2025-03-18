@@ -50,8 +50,6 @@ const UpdateJobForm = ({ job: initialJob, onClose }: UpdateJobFormProps) => {
     getStatus();
   }, []);
 
-  // Récupérer les données du job à mettre à jour
-
   const jobSchema = useJobSchema();
 
   const validateJob = (jobData: Job) => {
@@ -88,10 +86,6 @@ const UpdateJobForm = ({ job: initialJob, onClose }: UpdateJobFormProps) => {
 
   return (
     <div>
-      {" "}
-      <h1>
-        {t("updateJob")} <span className="font-bold">{job.title}</span>
-      </h1>
       <form onSubmit={handleSubmit} role="form" className="flex flex-col gap-3">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <div className="flex flex-col gap-1">
@@ -158,6 +152,7 @@ const UpdateJobForm = ({ job: initialJob, onClose }: UpdateJobFormProps) => {
             name="description"
             placeholder="We are looking for a software engineer..."
             value={job.description}
+            className="h-96"
             onChange={handleChange}
           />
           {errors.description && (
@@ -197,6 +192,7 @@ const UpdateJobForm = ({ job: initialJob, onClose }: UpdateJobFormProps) => {
             <Label htmlFor="status">{t("job.status")}</Label>
             <Select
               name="status"
+              value={job.status.name ? job.status.name : ""}
               onValueChange={(value) =>
                 setJob((prevJob) => {
                   const selectedStatus = status.find((s) => s.name === value);
@@ -207,7 +203,10 @@ const UpdateJobForm = ({ job: initialJob, onClose }: UpdateJobFormProps) => {
                 })
               }
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger
+                className="w-full"
+                style={{ backgroundColor: job.status.color }}
+              >
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent role="combobox">

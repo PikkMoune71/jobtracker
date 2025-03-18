@@ -60,6 +60,9 @@ export async function PUT(req: Request) {
     const updatedJob = await prisma.job.update({
       where: { id: id },
       data: jobData,
+      include: {
+        status: true,
+      },
     });
 
     return new Response(JSON.stringify(updatedJob), { status: 200 });

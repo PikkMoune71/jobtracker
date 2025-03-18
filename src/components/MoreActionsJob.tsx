@@ -10,12 +10,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Check, Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import { Check, MoreHorizontal, Trash2 } from "lucide-react";
 import { iconMap } from "@/hooks/useIconMap";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { Status } from "@/types/Status";
 import { Job } from "@/types/Job";
+import { DrawerUpdateJobForm } from "./DrawerUpdateJobForm";
 import { useI18n } from "@/locales/client";
 
 interface MoreActionsJobProps {
@@ -29,12 +30,9 @@ export const MoreActionsJob = ({
   job,
   selectedStatus,
   onStatusChange,
-  onUpdatedJobClick,
 }: MoreActionsJobProps) => {
   const t = useI18n();
   const status = useSelector((state: RootState) => state.status?.status);
-
-  const updateJob = t("updateJob");
 
   const handleDeleteJob = () => {
     // Implement delete job
@@ -57,17 +55,11 @@ export const MoreActionsJob = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent role="menu">
-        <DropdownMenuItem className="cursor-pointer">
-          {onUpdatedJobClick && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onUpdatedJobClick(job)}
-            >
-              <Edit className="mr-2" />
-              {updateJob}
-            </Button>
-          )}
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onSelect={(e) => e.preventDefault()}
+        >
+          <DrawerUpdateJobForm job={job} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         {handleDeleteJob && (
@@ -75,15 +67,13 @@ export const MoreActionsJob = ({
             onClick={() => handleDeleteJob()}
             className="text-red-500"
           >
-            <Trash2 className="mr-2 text-red-500" /> Supprimer
+            <Trash2 className="mr-2 text-red-500" /> {t("deleteJob")}
           </DropdownMenuItem>
         )}
-        {/* Dropdown for changing job status */}
         <DropdownMenuSeparator />
-
         <DropdownMenuSub>
           <DropdownMenuSubTrigger role="menuitemStatus">
-            Change status
+            {t("changeStatus")}
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent role="dropdownStatus">

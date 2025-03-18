@@ -36,6 +36,7 @@ export default {
       name: "Le nom du statut est requis",
     },
   },
-  updateJob: "Mettre à jour l'emploi",
-  deleteJob: "Supprimer l'emploi",
+  updateJob: "Modifier",
+  deleteJob: "Supprimer",
+  changeStatus: "Changer le statut",
 } as const;

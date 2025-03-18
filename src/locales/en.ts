@@ -36,6 +36,7 @@ export default {
       name: "Status name is required",
     },
   },
-  updateJob: "Update Job",
-  deleteJob: "Delete Job",
+  updateJob: "Update",
+  deleteJob: "Delete",
+  changeStatus: "Change Status",
 } as const;

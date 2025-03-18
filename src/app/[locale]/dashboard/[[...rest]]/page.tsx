@@ -47,7 +47,6 @@ export default function Page() {
     setSelectedStatus(null);
   };
 
-  console.log("showUpdateJob", showUpdateJob);
   return (
     <SidebarProvider>
       <AppSidebar

@@ -16,9 +16,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import UpdateJobForm from "@/components/UpdateJobForm";
 import { useI18n } from "@/locales/client";
-import { Job } from "@/types/Job";
+
 import { Status } from "@/types/Status";
 import { UserProfile } from "@clerk/nextjs";
 import { useState } from "react";
@@ -27,24 +26,15 @@ export default function Page() {
   const t = useI18n();
   const [showAccount, setShowAccount] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<Status | null>(null);
-  const [showUpdateJob, setShowUpdateJob] = useState<Job | null>(null);
 
   const handleShowAccount = () => {
     setShowAccount(true);
     setSelectedStatus(null);
-    setShowUpdateJob(null);
   };
 
   const handleStatusClick = (status: Status) => {
     setSelectedStatus(status);
     setShowAccount(false);
-    setShowUpdateJob(null);
-  };
-
-  const handleUpdateJob = (job: Job) => {
-    setShowUpdateJob(job);
-    setShowAccount(false);
-    setSelectedStatus(null);
   };
 
   return (
@@ -78,7 +68,7 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {!showAccount && !selectedStatus && !showUpdateJob ? (
+          {!showAccount && !selectedStatus ? (
             <Board />
           ) : showAccount ? (
             <div className="flex justify-center items-center">
@@ -88,16 +78,7 @@ export default function Page() {
             <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
               {selectedStatus && (
                 <div className="flex flex-col">
-                  <StatusBoard
-                    selectedStatus={selectedStatus}
-                    onUpdatedJobClick={handleUpdateJob}
-                  />
-                </div>
-              )}
-
-              {showUpdateJob && (
-                <div className="flex justify-center items-center">
-                  <UpdateJobForm job={showUpdateJob} />
+                  <StatusBoard selectedStatus={selectedStatus} />
                 </div>
               )}
             </div>

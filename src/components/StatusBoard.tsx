@@ -9,17 +9,12 @@ import { Badge } from "./ui/badge";
 import { JobItem } from "./JobItem";
 import Loader from "./Loader";
 import { usePathname } from "next/navigation";
-import { Job } from "@/types/Job";
 
 interface StatusBoardProps {
   selectedStatus: Status;
-  onUpdatedJobClick: (job: Job) => void;
 }
 
-export const StatusBoard = ({
-  selectedStatus,
-  onUpdatedJobClick,
-}: StatusBoardProps) => {
+export const StatusBoard = ({ selectedStatus }: StatusBoardProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { jobs, state } = useSelector((state: RootState) => state.jobs);
   const pathname = usePathname();
@@ -74,7 +69,6 @@ export const StatusBoard = ({
                 job={job}
                 selectedStatus={selectedStatus}
                 onStatusChange={handleStatusChange}
-                onUpdatedJobClick={() => onUpdatedJobClick(job)}
               />
             ))}
           </div>

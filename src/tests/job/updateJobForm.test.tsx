@@ -79,7 +79,7 @@ describe("UpdateJobForm", () => {
     fireEvent.click(screen.getByRole("option", { name: "Application Sent" }));
 
     const button = screen.getByTestId("update-job-button");
-    expect(button).toHaveTextContent("Update Job");
+    expect(button).toHaveTextContent("Update");
     fireEvent.click(button);
 
     expect(store.dispatch).toHaveBeenCalledTimes(1);

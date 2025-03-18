@@ -71,3 +71,19 @@ export async function PUT(req: Request) {
     return new Response("Erreur serveur", { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
+
+  try {
+    await prisma.job.delete({
+      where: { id: id },
+    });
+
+    return new Response("Job supprimé", { status: 200 });
+  } catch (error) {
+    console.error("Erreur lors de la suppression du job:", error);
+    return new Response("Erreur serveur", { status: 500 });
+  }
+}

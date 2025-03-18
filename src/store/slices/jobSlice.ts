@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Job } from "@/types/Job";
 import {
   addJobToDatabase,
+  deleteJobToDatabase,
   fetchJobs,
   fetchJobsByStatus,
   updateJobInDatabase,
@@ -115,6 +116,16 @@ export const jobSlice = createSlice({
         }
       })
       .addCase(updateJobInDatabase.rejected, (state, action) => {
+        state.error = action.payload as string;
+      })
+      .addCase(deleteJobToDatabase.pending, (state) => {
+        state.state = "loading";
+      })
+      .addCase(deleteJobToDatabase.fulfilled, (state, action) => {
+        state.jobs = state.jobs.filter((job) => job.id !== action.meta.arg.id);
+        state.state = "succeeded";
+      })
+      .addCase(deleteJobToDatabase.rejected, (state, action) => {
         state.error = action.payload as string;
       });
   },

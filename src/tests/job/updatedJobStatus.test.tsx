@@ -29,6 +29,17 @@ describe("MoreActionsJob", () => {
       },
     });
     store.dispatch = jest.fn();
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: jest.fn().mockImplementation((query) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
+    });
   });
 
   it("should render status options correctly", async () => {
@@ -39,7 +50,6 @@ describe("MoreActionsJob", () => {
     };
 
     const onStatusChangeMock = jest.fn();
-    const onUpdatedJobClickMock = jest.fn();
 
     const job: Job = {
       id: "123",
@@ -61,7 +71,6 @@ describe("MoreActionsJob", () => {
               job={job}
               selectedStatus={selectedStatus}
               onStatusChange={onStatusChangeMock}
-              onUpdatedJobClick={onUpdatedJobClickMock}
             />
           </Provider>
         </I18nProviderClient>
@@ -97,7 +106,6 @@ describe("MoreActionsJob", () => {
     };
 
     const onStatusChangeMock = jest.fn();
-    const onUpdatedJobClickMock = jest.fn();
 
     const job: Job = {
       id: "123",
@@ -119,7 +127,6 @@ describe("MoreActionsJob", () => {
               job={job}
               selectedStatus={selectedStatus}
               onStatusChange={onStatusChangeMock}
-              onUpdatedJobClick={onUpdatedJobClickMock}
             />
           </Provider>
         </I18nProviderClient>

@@ -12,18 +12,18 @@ import {
 import { Button } from "./ui/button";
 import { Check, MoreHorizontal, Trash2 } from "lucide-react";
 import { iconMap } from "@/hooks/useIconMap";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
 import { Status } from "@/types/Status";
 import { Job } from "@/types/Job";
 import { DrawerUpdateJobForm } from "./DrawerUpdateJobForm";
 import { useI18n } from "@/locales/client";
+import { deleteJobToDatabase } from "@/store/actions/jobActions";
 
 interface MoreActionsJobProps {
   job: Job;
   selectedStatus: Status;
   onStatusChange: (jobId: string, newStatus: Status) => void;
-  onUpdatedJobClick: (job: Job) => void;
 }
 
 export const MoreActionsJob = ({
@@ -31,11 +31,13 @@ export const MoreActionsJob = ({
   selectedStatus,
   onStatusChange,
 }: MoreActionsJobProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const t = useI18n();
   const status = useSelector((state: RootState) => state.status?.status);
 
   const handleDeleteJob = () => {
     // Implement delete job
+    dispatch(deleteJobToDatabase({ id: job.id ?? "" }));
   };
 
   const handleStatusChange = (newStatus: Status) => {

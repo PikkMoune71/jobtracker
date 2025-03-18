@@ -111,3 +111,24 @@ export const updateJobInDatabase = createAsyncThunk(
     }
   }
 );
+
+// Action asynchrone pour supprimer un job de la BDD
+export const deleteJobToDatabase = createAsyncThunk(
+  "job/deleteJobToDatabase",
+  async ({ id }: { id: string }) => {
+    try {
+      const response = await axios.delete(`/api/jobs/${id}`);
+
+      if (!response.data) {
+        throw new Error("Erreur lors de la suppression du job");
+      }
+
+      return await response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "An unknown error occurred";
+    }
+  }
+);
